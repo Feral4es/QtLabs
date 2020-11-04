@@ -1,0 +1,167 @@
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include <QComboBox>
+#include <QString>
+#include <QRegExp>
+#include <QtCore>
+
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+    ui->comboBox_sex->setEnabled(false);
+    ui->comboBox_race->setEnabled(false);
+    ui->comboBox_class->setEnabled(false);
+    ui->pushButton_generate->setEnabled(false);
+    ui->label_error->setStyleSheet("color: #f00");
+
+    ui->lineEdit_name->setValidator(new QRegExpValidator(QRegExp("^[a-zA-Z]{0,8}$"), this));
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::on_lineEdit_name_editingFinished()
+{
+    QString name = ui->lineEdit_name->text();
+    if (name.length() == 0)
+    {
+        ui->comboBox_sex->setEnabled(false);
+        ui->comboBox_race->setEnabled(false);
+        ui->comboBox_class->setEnabled(false);
+        ui->pushButton_generate->setEnabled(false);
+        ui->label_error->setText("Заполните имя!");
+    } else {
+        ui->comboBox_sex->setEnabled(true);
+        ui->label_error->setText("");
+    }
+}
+
+void MainWindow::on_comboBox_sex_currentIndexChanged(int index)
+{
+    if (index == 0)
+    {
+        ui->comboBox_race->setEnabled(false);
+        ui->comboBox_class->setEnabled(false);
+        ui->pushButton_generate->setEnabled(false);
+    } else {
+        ui->comboBox_race->setEnabled(true);
+    }
+}
+
+void MainWindow::on_comboBox_race_currentIndexChanged(int index)
+{
+    if (index == 0)
+    {
+        ui->comboBox_class->setEnabled(false);
+        ui->pushButton_generate->setEnabled(false);
+    } else {
+        ui->comboBox_class->setEnabled(true);
+    }
+}
+
+void MainWindow::on_comboBox_class_currentIndexChanged(int index)
+{
+    if (index == 0)
+    {
+        ui->pushButton_generate->setEnabled(false);
+    } else {
+        ui->pushButton_generate->setEnabled(true);
+    }
+}
+
+QString arrayRace[2][6] = {
+    {"мужчина", "маг", "орк", "эльф", "огр", "нежить"},
+    {"женщина", "волшебница", "орк", "эльфийка", "огр", "нежить"}
+};
+
+QString arrayClass[6] = {"маг", "боец", "стрелок", "ассасин", "танк", "целитель"};
+
+// расса(вертикаль) класс(горизонталь), 2:1 не существует
+int arrayDamage[6][6] = {
+    {100, 50, 70, 90, 30, 20},
+    {0, 100, 120, 140, 80, 70},
+    {170, 120, 140, 160, 100, 90},
+    {200, 150, 170, 190, 130, 120},
+    {80, 30, 50, 70, 10, 0},
+    {90, 40, 60, 80, 20, 10}
+};
+
+int arrayHealth[6][6] = {
+    {100, 200, 150, 50, 1000, 500},
+    {0, 50, 150, 100, 950, 450},
+    {120, 70, 170, 120, 970, 470},
+    {200, 300, 250, 150, 1100, 600},
+    {80, 180, 130, 30, 980, 480},
+    {90, 190, 140, 40, 990, 490}
+};
+
+int arrayArmor[6][6] = {
+    {50, 100, 70, 40, 500, 100},
+    {0, 110, 80, 50, 510, 110},
+    {100, 150, 120, 90, 550, 150},
+    {200, 350, 220, 190, 650, 250},
+    {1000, 500, 200, 100, 2000, 700},
+    {500, 800, 400, 300, 1000, 600}
+};
+
+int arrayIntelligence[6][6] = {
+    {0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0},
+};
+
+QString arraySkill[6][6] = {
+    {"вызывает магических животных", "нет", "нет", "нет", "нет", "нет"},
+    {NULL, "нет", "нет", "нет", "нет", "магический щит"},
+    {"нет", "нет", "вызывает отравление", "нет", "нет", "нет"},
+    {"нет", "способен восстановить свое здоровье", "нет", "нет", "нет", "нет"},
+    {"нет", "нет", "", "", "невосприимчив к магии", "нет"},
+    {"нет", "нет", "бессмертие", "нет", "нет", "нет"},
+};
+
+void Clean(Ui::MainWindow* ui)
+{
+    ui->lineEdit_name->setText("");
+    ui->comboBox_sex->setCurrentIndex(0);
+    ui->comboBox_race->setCurrentIndex(0);
+    ui->comboBox_class->setCurrentIndex(0);
+
+    ui->comboBox_sex->setEnabled(false);
+    ui->comboBox_race->setEnabled(false);
+    ui->comboBox_class->setEnabled(false);
+    ui->pushButton_generate->setEnabled(false);
+}
+
+void Generate(Ui::MainWindow* ui)
+{
+    int sex_val = ui->comboBox_sex->currentIndex() - 1;
+    int race_val = ui->comboBox_race->currentIndex() - 1;
+    int class_val = ui->comboBox_class->currentIndex() - 1;
+
+    ui->label_name->setText(ui->lineEdit_name->text());
+    ui->label_type->setText(QString(arrayRace[sex_val][race_val]) + " - " + QString(arrayClass[class_val]));
+    ui->label_damage->setText(QString::number(arrayDamage[race_val][class_val]));
+    ui->label_health->setText(QString::number(arrayHealth[race_val][class_val]));
+    ui->label_armor->setText(QString::number(arrayArmor[race_val][class_val]));
+    ui->label_intelligence->setText(QString::number(arrayIntelligence[race_val][class_val]));
+    ui->label_skill->setText(QString(arraySkill[race_val][class_val]));
+    Clean(ui);
+}
+
+void MainWindow::on_pushButton_generate_clicked()
+{
+    if (ui->comboBox_race->currentIndex() == 2 && ui->comboBox_class->currentIndex() == 1 )
+    {
+        ui->label_error->setText("Нельзя выбрать маг маг");
+    } else {
+        ui->label_error->setText("");
+        Generate(ui);
+    }
+}
