@@ -10,13 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-//    ui->radioButton_plus->setChecked(true);
 
-    connect(ui->radioButton_plus, SIGNAL(clicked()), this, SLOT(Op2_enabled(ui)));
-    connect(ui->radioButton_min, SIGNAL(toggled(bool)), this, SLOT(Op2_enabled(ui)));
-    connect(ui->radioButton_div, SIGNAL(toggled(bool)), this, SLOT(Op2_enabled(ui)));
-    connect(ui->radioButton_mult, SIGNAL(toggled(bool)), this, SLOT(Op2_enabled(ui)));
-    connect(ui->radioButton_sqrt, SIGNAL(toggled(bool)), this, SLOT(Op2_disabled(ui)));
 }
 
 MainWindow::~MainWindow()
@@ -24,13 +18,22 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void Clean(Ui::MainWindow* ui)
+{
+    ui->label_result->setText("");
+    ui->lineEdit_op2->setText("");
+    ui->lineEdit_op1->setText("");
+}
+
 void Op2_enabled(Ui::MainWindow* ui)
 {
+    Clean(ui);
     ui->lineEdit_op2->setEnabled(true);
 }
 
 void Op2_disabled(Ui::MainWindow* ui)
 {
+    Clean(ui);
     ui->lineEdit_op2->setEnabled(false);
 }
 
@@ -114,7 +117,17 @@ void operations(QString operator_1, QString operator_2, Ui::MainWindow* ui)
         result = x / y;
     }
 
-    if (sqrt) result = qSqrt(x);
+    if (sqrt)
+    {
+
+        if (x <= 0)
+        {
+            ErrorMessage("Корень из 0 и из отрецательных извлечь нельзя!!!");
+            ui->label_result->setText("");
+            return;
+        }
+        result = qSqrt(x);
+    }
 
     ui->label_result->setText(QString("Результат: ") + QString::number(result));
     ui->label_result->setStyleSheet("color: #2F4F2F");
@@ -142,4 +155,30 @@ void MainWindow::on_pushButton_calc_clicked()
         onError(check1, check2);
     }
 
+}
+
+
+void MainWindow::on_radioButton_plus_clicked()
+{
+    Op2_enabled(ui);
+}
+
+void MainWindow::on_radioButton_sqrt_clicked()
+{
+    Op2_disabled(ui);
+}
+
+void MainWindow::on_radioButton_min_clicked()
+{
+    Op2_enabled(ui);
+}
+
+void MainWindow::on_radioButton_div_clicked()
+{
+    Op2_enabled(ui);
+}
+
+void MainWindow::on_radioButton_mult_clicked()
+{
+    Op2_enabled(ui);
 }

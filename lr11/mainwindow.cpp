@@ -7,25 +7,27 @@
 #include <QMessageBox>
 #include <QtMath>
 
+void Message(QString title, QString str)
+{
+    QMessageBox msgBox;
+    msgBox.setWindowTitle(title);
+    msgBox.setText(str);
+    msgBox.exec();
+}
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     ui->lineEdit_index->setValidator(new QRegExpValidator(QRegExp("^[0-9]{0,4}$"), this));
+    Message("Подсказка", "Добро пожаловать,\n Эта программа предназначена для посиска символа по идентификатору в строке\n Введите в первое поле n-ое количиство символов (до 30!!!). ");
+    ui->lineEdit_index->setEnabled(false);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void ErrorMessage(QString str)
-{
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("Ошибка");
-    msgBox.setText(str);
-    msgBox.exec();
 }
 
 bool checkNotNull(QString str)
@@ -57,24 +59,24 @@ void MainWindow::on_pushButton_clicked()
         int strLength = string.length();
 
         if (strLength > id) {
-            ui->label_char->setText("Ваш символ: " + QString(string[id]));
-
             ui->lineEdit_string->setText("");
             ui->lineEdit_index->setText("");
+            ui->label_char->setText("Ваш символ: " + QString(string[id]));
+
         } else {
             QString arr[3] = {" символ", " символа", " символов"};
             QString charDecl = declOfNum(2, arr);
             QString error1 = "В строке содержится ";
             QString error2 = ".\nВыберите индекс от 0 до ";
 
-            ErrorMessage(error1 + QString::number(strLength) + charDecl + error2 + QString::number(strLength - 1));
+            Message("Ошибка", error1 + QString::number(strLength) + charDecl + error2 + QString::number(strLength - 1));
         }
     } else if (checkString && !checkIndex) {
-        ErrorMessage("Заполните строку!");
+        Message("Ошибка", "Заполните индекс!");
     } else if (!checkString && checkIndex) {
-        ErrorMessage("Заполните индекс!");
+        Message("Ошибка", "Заполните строку!");
     } else {
-        ErrorMessage("Заполните строку и индекс!");
+        Message("Ошибка", "Заполните строку и индекс!");
     }
 }
 
@@ -85,5 +87,12 @@ void MainWindow::on_lineEdit_index_textChanged(const QString &arg1)
 
 void MainWindow::on_lineEdit_string_textChanged(const QString &arg1)
 {
+    if (arg1.length() == 0)
+    {
+       ui->lineEdit_index->setEnabled(false);
+    } else {
+       ui->lineEdit_index->setEnabled(true);
+    }
     ui->label_char->setText("");
 }
+

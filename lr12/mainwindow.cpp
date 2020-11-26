@@ -2,24 +2,27 @@
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 
+void Message(QString title, QString str)
+{
+    QMessageBox msgBox;
+    msgBox.setWindowTitle(title);
+    msgBox.setText(str);
+    msgBox.exec();
+}
+
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    Message("Подсказка", "Добро пожаловать,\n Эта программа предназначена для посиска индекса символа в строке\n Введите в первое поле n-ое количиство символов (до 30!!!). ");
+    ui->lineEdit_index->setEnabled(false);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void ErrorMessage(QString str)
-{
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("Ошибка");
-    msgBox.setText(str);
-    msgBox.exec();
 }
 
 bool checkNotNull(QString str)
@@ -66,16 +69,22 @@ void MainWindow::on_pushButton_clicked()
         QString result = findChar(string, strChar);
         ui->label_char->setText(result);
     } else if (checkString && !checkChar) {
-        ErrorMessage("Заполните строку!");
+        Message("Ошибка","Заполните символ!");
     } else if (!checkString && checkChar) {
-        ErrorMessage("Заполните символ!");
+        Message("Ошибка","Заполните символ!");
     } else {
-        ErrorMessage("Заполните строку и символ!");
+        Message("Ошибка","Заполните строку и символ!");
     }
 }
 
 void MainWindow::on_lineEdit_string_textChanged(const QString &arg1)
 {
+    if (arg1.length() == 0)
+    {
+       ui->lineEdit_index->setEnabled(false);
+    } else {
+       ui->lineEdit_index->setEnabled(true);
+    }
     ui->label_char->setText("");
 }
 

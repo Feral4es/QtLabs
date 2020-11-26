@@ -102,9 +102,12 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QRadioButton" name="radioButton_div">
+       <widget class="QRadioButton" name="radioButton_plus">
         <property name="text">
-         <string>/</string>
+         <string>+</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -116,16 +119,19 @@
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_plus">
+       <widget class="QRadioButton" name="radioButton_mult">
         <property name="text">
-         <string>+</string>
+         <string>*</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QRadioButton" name="radioButton_mult">
+       <widget class="QRadioButton" name="radioButton_div">
         <property name="text">
-         <string>*</string>
+         <string>/</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -152,7 +158,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

@@ -116,3 +116,4 @@ void MainWindow::on_pushButton_calc_clicked()
     }
 
 }
+

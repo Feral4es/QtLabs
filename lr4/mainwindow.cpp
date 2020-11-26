@@ -2,13 +2,15 @@
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 #include <QString>
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->label_result->setStyleSheet("color: #4fb700");
+    ui->comboBox_op1->setStyleSheet("background: #ffffff");
+    ui->comboBox_op2->setStyleSheet("background: #ffffff");
+    ui->comboBox_operation->setStyleSheet("background: #ffffff");
+    ui->pushButton_result->setStyleSheet("background: #ffffff");
 }
 
 MainWindow::~MainWindow()
@@ -84,17 +86,12 @@ void Calculate(int op1, int op2, int operation, Ui::MainWindow* ui)
             result = !(op1 == op2);
             break;
     }
-
-    QString res_str;
-    if (result)
-    {
-        res_str = "истина";
-    } else {
-        res_str = "ложь";
-    }
-
     Clean(ui);
-    ui->label_result->setText(QString("Результат: ") + res_str);
+    if (result) {
+        ui->centralwidget->setStyleSheet("background: #4fb700");
+    }else {
+        ui->centralwidget->setStyleSheet("background: #B22222");
+    }
 }
 
 void MainWindow::on_pushButton_result_clicked()
@@ -111,21 +108,22 @@ void MainWindow::on_pushButton_result_clicked()
 
 void MainWindow::on_comboBox_operation_currentIndexChanged(int index)
 {
+    ui->centralwidget->setStyleSheet("background: #ffffff");
     if (index == 3) {
         ui->comboBox_op2->setEnabled(false);
         ui->comboBox_op2->setCurrentIndex(0);
     } else {
         ui->comboBox_op2->setEnabled(true);
-    }
-    ui->label_result->setText("");
+    }    
 }
 
 void MainWindow::on_comboBox_op1_currentIndexChanged(int index)
 {
-    ui->label_result->setText("");
+     ui->centralwidget->setStyleSheet("background: #ffffff");
 }
 
 void MainWindow::on_comboBox_op2_currentIndexChanged(int index)
 {
-    ui->label_result->setText("");
+     ui->centralwidget->setStyleSheet("background: #ffffff");
 }
+

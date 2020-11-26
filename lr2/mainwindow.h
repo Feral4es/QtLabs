@@ -20,8 +20,5 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-//    void ErrorMessage();
-//    int checkIsNumber();
-//    void onError();
 };
 #endif // MAINWINDOW_H

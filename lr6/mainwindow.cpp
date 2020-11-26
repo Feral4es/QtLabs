@@ -4,16 +4,16 @@
 #include <QString>
 
 int arrayForTable[10][5] = {
-    {32, 43, 123, 4, 1},
-    {2, 0, 34, -31, 0},
-    {4, -1, 12, 43, 25},
-    {354, 3, 15, 89, -51},
-    {2, 54, 83, 38, 10},
-    {5, -30, 20, 29, 17},
-    {67, 54, 36, 10, 13},
-    {23, 12, 72, 2, 84},
-    {12, 5, 9, 90, 37},
-    {5, 9, 1, -3, 30}
+    {0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0},
 };
 
 MainWindow::MainWindow(QWidget *parent)
@@ -35,7 +35,8 @@ MainWindow::MainWindow(QWidget *parent)
         }
     }
 
-    ui->lineEdit->setValidator(new QRegExpValidator(QRegExp("^[0-9/-]{0,8}$"), this));
+    ui->lineEdit->setValidator(new QRegExpValidator(QRegExp("^[0-9/-]{0,4}$"), this));
+
 
 }
 
@@ -183,6 +184,15 @@ int quickSort(int* data, int const len)
 
 void MainWindow::on_pushButton_clicked()
 {
+    int arr[10][5];
+
+    for (int i=0; i<10; i++)
+                for (int j=0; j<5; j++)
+                {
+                    QString val = ui->tableWidget->item(i, j)->text();
+                    arr[i][j] = val.toInt(0, 10);
+                }
+
     int selectionArr[10];
     int bubbleArr[10];
     int insertionArr[10];
@@ -191,11 +201,11 @@ void MainWindow::on_pushButton_clicked()
 
     for (int i=0; i<10; i++)
     {
-        selectionArr[i] = arrayForTable[i][0];
-        bubbleArr[i] = arrayForTable[i][1];
-        insertionArr[i] = arrayForTable[i][2];
-        mergeArr[i] = arrayForTable[i][3];
-        quickArr[i] = arrayForTable[i][4];
+        selectionArr[i] = arr[i][0];
+        bubbleArr[i] = arr[i][1];
+        insertionArr[i] = arr[i][2];
+        mergeArr[i] = arr[i][3];
+        quickArr[i] = arr[i][4];
     }
 
     selectionArr[10] = selectionSort(selectionArr, 10);

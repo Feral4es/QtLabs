@@ -34,7 +34,7 @@ int checkIsNumber(QString str)
 
 void ErrorMessager(QString str, Ui::MainWindow* ui)
 {
-    ui->lineEdit_4->setText(" ");
+    ui->lineEdit_Res->setText(" ");
     ui->label_error->setText(" ");
     QMessageBox msgBox;
     msgBox.setWindowTitle("Ошибка");
@@ -49,8 +49,8 @@ void MainWindow::on_pushButton_clicked()
     QString error;
 
     // Получаю значения полей (тип строка)
-    QString operator_1 = ui->lineEdit->text();
-    QString operator_2 = ui->lineEdit_3->text();
+    QString operator_1 = ui->lineEdit_Op1->text();
+    QString operator_2 = ui->lineEdit_Op2->text();
     bool check = checkIsNumber(operator_1) == 1 && checkIsNumber(operator_2) == 1;
 
     QString error_mes1 = "Операция не возможна!!!\n";
@@ -75,7 +75,7 @@ void MainWindow::on_pushButton_clicked()
         sum = x + y;
         error = "Операция проведена успешно. Результат вычисления " + QString::number(sum);
         // Заполняю поле результата
-        ui->lineEdit_4->setText(QString::number(sum));
+        ui->lineEdit_Res->setText(QString::number(sum));
         ui->label_error->setStyleSheet("color: #2F4F2F");
         ui->label_error->setText(error);
 

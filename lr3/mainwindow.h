@@ -18,8 +18,15 @@ public:
 private slots:
     void on_pushButton_calc_clicked();
 
-//    void Op2_enabled();
-//    void Op2_disabled();
+    void on_radioButton_plus_clicked();
+
+    void on_radioButton_sqrt_clicked();
+
+    void on_radioButton_min_clicked();
+
+    void on_radioButton_div_clicked();
+
+    void on_radioButton_mult_clicked();
 
 private:
     Ui::MainWindow *ui;
