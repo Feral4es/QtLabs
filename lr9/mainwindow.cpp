@@ -167,10 +167,10 @@ void MainWindow::on_pushButton_clicked()
         ui->label_number->setText(QString(""));
         ui->label_number->setStyleSheet("color: black");
 
-        int l = len.toInt(0, 10);
+        int l = len.toInt();
 
         int **arr = new int* [l];
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < l; i++)
         {
             arr[i] = new int [5];
         }
@@ -179,7 +179,7 @@ void MainWindow::on_pushButton_clicked()
             for (int j=0; j<5; j++)
             {
                 QString val = ui->tableWidget->item(i, j)->text();
-                arr[i][j] = val.toInt(0, 10);
+                arr[i][j] = val.toInt();
             }
 
 
@@ -199,11 +199,11 @@ void MainWindow::on_pushButton_clicked()
             quickArr[i] = arr[i][4];
         }
 
-        selectionArr[10] = selectionSort(selectionArr, 10);
-        bubbleArr[10] = bubbleSort(bubbleArr, 10);
-        insertionArr[10] = insertionSort(insertionArr, 10);
-        mergeArr[10] = mergeSort(mergeArr, 10);
-        quickArr[10] = quickSort(quickArr, 10);
+        selectionArr[l] = selectionSort(selectionArr, l);
+        bubbleArr[l] = bubbleSort(bubbleArr, l);
+        insertionArr[l] = insertionSort(insertionArr, l);
+        mergeArr[l] = mergeSort(mergeArr, l);
+        quickArr[l] = quickSort(quickArr, l);
 
         for (int i=0; i<10; i++)
         {
@@ -320,19 +320,21 @@ void MainWindow::on_pushButton_view_clicked()
         ui->label_number->setText(QString("Вы не задали длинну массива"));
         ui->label_number->setStyleSheet("color: red");
     } else {
-        int l = len.toInt(0,10);
+        int l = len.toInt();
 
         int **arr = new int* [l];
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < l; i++)
                 arr[i] = new int [5];
 
         for (int i=0; i<l; i++)
         {
             for (int j=0; j<5; j++)
             {
-                arr[i][j] = (rand() % 10);
+                // arr[i][j] = (rand() % 10);
+                arr[i][j] = 0;
             }
         }
+        ui->tableWidget->setRowCount(0);
 
         int rowCount = ui->tableWidget->rowCount() + 1;
 
