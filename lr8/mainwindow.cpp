@@ -358,3 +358,35 @@ void MainWindow::on_pushButton_view_clicked()
 
 
 }
+
+void MainWindow::on_pushButton_delete_clicked()
+{
+    int rowCount = ui->tableWidget->rowCount();
+
+    int **arr = new int* [rowCount];
+        for (int i = 0; i < rowCount; i++)
+            arr[i] = new int [rowCount];
+
+    for (int i=0; i<rowCount; i++)
+        for (int j=0; j<5; j++)
+        {
+            QString val = ui->tableWidget->item(i, j)->text();
+            arr[i][j] = val.toInt();
+        }
+
+    for (int j = 0; j < 5; j++)
+        for (int i = 0; i < rowCount; i++)
+        {
+            for (int k = i + 1; k < rowCount; k++)
+            {
+                if (arr[i][j] == arr[k][j])
+                {
+                    arr[i][j] = 0;
+
+                    QTableWidgetItem *item = new QTableWidgetItem();
+                    item->setText(QString::number(0));
+                    ui->tableWidget->setItem(i, j, item);
+                }
+            }
+        }
+}
